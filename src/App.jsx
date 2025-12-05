@@ -1470,15 +1470,16 @@ function CameraController({ section, isMobile, showAvatar }) {
   
   useFrame(() => {
     // Adjust camera positions for mobile + avatar visibility
-    const mobileAvatarAdjust = (isMobile && showAvatar) ? 1.5 : 0; // Pull camera back on mobile if avatar shown
+    const mobileAdjust = isMobile ? 0.5 : 0; // Extra distance on mobile for full board view
+    const mobileAvatarAdjust = (isMobile && showAvatar) ? 1.5 : 0; // Additional pull back if avatar shown
     
     const cameraPositions = [
-      { pos: [0, 2.2, 6 + mobileAvatarAdjust], lookAt: [0, 2.2, -2.9] },     // 0: Home - head-on, board fills screen width
-      { pos: [1.5, 1.7, 4.5 + mobileAvatarAdjust], lookAt: [0, 1.5, 0] },    // 1: Services - slight angle, full view
-      { pos: [0.8, 1.8, 4.8 + mobileAvatarAdjust], lookAt: [0, 1.5, 0] },    // 2: Training - centered, full view
-      { pos: [-0.8, 1.8, 4.8 + mobileAvatarAdjust], lookAt: [0, 1.5, 0] },   // 3: Pricing - opposite angle, full view
-      { pos: [-1.5, 1.7, 4.5 + mobileAvatarAdjust], lookAt: [0, 1.5, 0] },   // 4: What You Can Build - left angle, full view
-      { pos: [0, 1.9, 5 + mobileAvatarAdjust], lookAt: [0, 1.5, 0] }         // 5: Contact - centered elevated, full view
+      { pos: [0, 2.2, 6 + mobileAdjust + mobileAvatarAdjust], lookAt: [0, 2.2, -2.9] },     // 0: Home - head-on, board fills screen width
+      { pos: [1.5, 1.7, 4.5 + mobileAdjust + mobileAvatarAdjust], lookAt: [0, 1.5, 0] },    // 1: Services - slight angle, full view
+      { pos: [0.8, 1.8, 4.8 + mobileAdjust + mobileAvatarAdjust], lookAt: [0, 1.5, 0] },    // 2: Training - centered, full view
+      { pos: [-0.8, 1.8, 4.8 + mobileAdjust + mobileAvatarAdjust], lookAt: [0, 1.5, 0] },   // 3: Pricing - opposite angle, full view
+      { pos: [-1.5, 1.7, 4.5 + mobileAdjust + mobileAvatarAdjust], lookAt: [0, 1.5, 0] },   // 4: What You Can Build - left angle, full view
+      { pos: [0, 1.9, 5 + mobileAdjust + mobileAvatarAdjust], lookAt: [0, 1.5, 0] }         // 5: Contact - centered elevated, full view
     ];
     
     const target = cameraPositions[section] || cameraPositions[0];
@@ -1696,6 +1697,7 @@ function ContactPopup({ type, onClose }) {
 // Loading Screen Component (inside Canvas)
 function Loader() {
   const { progress } = useProgress();
+  const isMobile = window.innerWidth < 768;
   
   return (
     <Html center>
@@ -1704,25 +1706,28 @@ function Loader() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '20px',
-        padding: '40px',
+        gap: isMobile ? '15px' : '20px',
+        padding: isMobile ? '24px 20px' : '40px',
         background: 'rgba(255, 255, 255, 0.95)',
-        borderRadius: '16px',
+        borderRadius: isMobile ? '12px' : '16px',
         boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
         backdropFilter: 'blur(10px)',
-        minWidth: '300px'
+        minWidth: isMobile ? '280px' : '300px',
+        maxWidth: isMobile ? '90vw' : '400px',
+        margin: '0 auto'
       }}>
-        <div style={{ fontSize: '3rem' }}>🎓</div>
+        <div style={{ fontSize: isMobile ? '2.5rem' : '3rem' }}>🎓</div>
         
         <h1 style={{
-          fontSize: '2rem',
+          fontSize: isMobile ? '1.5rem' : '2rem',
           background: 'linear-gradient(135deg, #0EA5E9, #10B981)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
           margin: 0,
           fontWeight: 700,
-          fontFamily: 'system-ui, -apple-system, sans-serif'
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+          textAlign: 'center'
         }}>
           Code Ed Ai
         </h1>
@@ -1730,7 +1735,7 @@ function Loader() {
         <div style={{ width: '100%', textAlign: 'center' }}>
           <div style={{
             width: '100%',
-            height: '8px',
+            height: isMobile ? '6px' : '8px',
             background: '#E5E7EB',
             borderRadius: '4px',
             overflow: 'hidden',
@@ -1747,12 +1752,12 @@ function Loader() {
           
           <p style={{
             color: '#64748B',
-            fontSize: '1rem',
+            fontSize: isMobile ? '0.9rem' : '1rem',
             margin: 0,
             fontWeight: 500,
             fontFamily: 'system-ui, -apple-system, sans-serif'
           }}>
-            {Math.round(progress)}%
+            Loading... {Math.round(progress)}%
           </p>
         </div>
       </div>
@@ -1875,7 +1880,7 @@ export default function ClassroomShowcase() {
         zIndex: 1
       }}>
         <Canvas
-          camera={{ position: [0, 2, 3.5], fov: isMobile ? 70 : 50 }}
+          camera={{ position: [0, 2, 3.5], fov: isMobile ? 75 : 50 }}
           dpr={[1, 2]}
           performance={{ min: 0.5 }}
           style={{ pointerEvents: 'auto' }}
@@ -2198,27 +2203,36 @@ export default function ClassroomShowcase() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '0.25rem',
-                  fontSize: '0.7rem',
+                  gap: '0.3rem',
+                  fontSize: '0.65rem',
                   color: section === i ? '#0EA5E9' : '#94A3B8',
-                  fontWeight: section === i ? 600 : 400,
+                  fontWeight: section === i ? 700 : 500,
                   cursor: 'pointer',
-                  padding: '0.5rem',
+                  padding: '0.4rem 0.2rem',
                   borderRadius: '8px',
                   transition: 'all 0.2s ease',
                   userSelect: 'none',
                   WebkitTapHighlightColor: 'transparent',
-                  minWidth: '60px'
+                  flex: 1,
+                  textAlign: 'center',
+                  background: section === i ? 'rgba(14, 165, 233, 0.1)' : 'transparent'
                 }}
               >
                 <div style={{
-                  width: '6px',
-                  height: '6px',
+                  width: section === i ? '8px' : '5px',
+                  height: section === i ? '8px' : '5px',
                   borderRadius: '50%',
                   background: section === i ? '#0EA5E9' : '#CBD5E1',
                   transition: 'all 0.2s ease'
                 }} />
-                {name}
+                <span style={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '100%'
+                }}>
+                  {name}
+                </span>
               </div>
             ))}
           </div>
