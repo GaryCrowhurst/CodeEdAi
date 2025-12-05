@@ -3,6 +3,9 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Text, Box, Plane, Cylinder, Sphere, useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 
+// Base URL for assets
+const BASE_URL = import.meta.env.BASE_URL;
+
 // Clickable Button Component with pulsing animation
 function ClickableButton({ position, text, onClick, color = "#FB923C", emissiveColor = "#F59E0B", width = 4, height = 0.45, fontSize = 0.18 }) {
   const meshRef = useRef();
@@ -1064,21 +1067,21 @@ function Whiteboard({ section, isDarkMode, expandedCard, onCardExpand }) {
 // Teaching Teacher with animations
 function TeachingTeacher({ section, onAvatarClick }) {
   const groupRef = useRef();
-  const { scene: avatarScene, animations: avatarAnims } = useGLTF('/animated_avatar.glb');
-  const { animations: wavingAnims } = useGLTF('/waving.glb');
-  const { animations: expression1Anims } = useGLTF('/expression1.glb');
-  const { animations: expression10Anims } = useGLTF('/expression10.glb');
-  const { animations: talk1Anims } = useGLTF('/talk1.glb');
-  const { animations: talk2Anims } = useGLTF('/talk2.glb');
-  const { animations: talk3Anims } = useGLTF('/talk3.glb');
-  const { animations: talk4Anims } = useGLTF('/talk4.glb');
-  const { animations: talk5Anims } = useGLTF('/talk5.glb');
-  const { animations: talk6Anims } = useGLTF('/talk6.glb');
-  const { animations: talk7Anims } = useGLTF('/talk7.glb');
-  const { animations: talk8Anims } = useGLTF('/talk8.glb');
-  const { animations: talk9Anims } = useGLTF('/talk9.glb');
-  const { animations: talk10Anims } = useGLTF('/talk10.glb');
-  const { animations: lookbackAnims } = useGLTF('/lookback.glb');
+  const { scene: avatarScene, animations: avatarAnims } = useGLTF(`${BASE_URL}animated_avatar.glb`);
+  const { animations: wavingAnims } = useGLTF(`${BASE_URL}waving.glb`);
+  const { animations: expression1Anims } = useGLTF(`${BASE_URL}expression1.glb`);
+  const { animations: expression10Anims } = useGLTF(`${BASE_URL}expression10.glb`);
+  const { animations: talk1Anims } = useGLTF(`${BASE_URL}talk1.glb`);
+  const { animations: talk2Anims } = useGLTF(`${BASE_URL}talk2.glb`);
+  const { animations: talk3Anims } = useGLTF(`${BASE_URL}talk3.glb`);
+  const { animations: talk4Anims } = useGLTF(`${BASE_URL}talk4.glb`);
+  const { animations: talk5Anims } = useGLTF(`${BASE_URL}talk5.glb`);
+  const { animations: talk6Anims } = useGLTF(`${BASE_URL}talk6.glb`);
+  const { animations: talk7Anims } = useGLTF(`${BASE_URL}talk7.glb`);
+  const { animations: talk8Anims } = useGLTF(`${BASE_URL}talk8.glb`);
+  const { animations: talk9Anims } = useGLTF(`${BASE_URL}talk9.glb`);
+  const { animations: talk10Anims } = useGLTF(`${BASE_URL}talk10.glb`);
+  const { animations: lookbackAnims } = useGLTF(`${BASE_URL}lookback.glb`);
   
   const [mixer] = useState(() => new THREE.AnimationMixer(avatarScene));
   const actionsRef = useRef({});
@@ -1771,12 +1774,12 @@ export default function ClassroomShowcase() {
   // Initialize audio elements
   useEffect(() => {
     audioRefs.current = [
-      new Audio('/Section0.m4a'),
-      new Audio('/Section1.m4a'),
-      new Audio('/Section2.m4a'),
-      new Audio('/Section3.m4a'),
-      new Audio('/Section4.m4a'),
-      new Audio('/Section5.m4a')
+      new Audio(`${BASE_URL}Section0.m4a`),
+      new Audio(`${BASE_URL}Section1.m4a`),
+      new Audio(`${BASE_URL}Section2.m4a`),
+      new Audio(`${BASE_URL}Section3.m4a`),
+      new Audio(`${BASE_URL}Section4.m4a`),
+      new Audio(`${BASE_URL}Section5.m4a`)
     ];
     
     // Cleanup on unmount
