@@ -1382,60 +1382,10 @@ function Classroom({ section, onPhoneClick, onEnvelopeClick, isDarkMode, expande
         <meshStandardMaterial color="#F1F5F9" roughness={0.9} />
       </Plane>
       
-      {/* Left wall with modern art */}
+      {/* Left wall */}
       <Plane args={[10, 6]} position={[-7.5, 3, 2]} rotation={[0, Math.PI / 2, 0]}>
         <meshStandardMaterial color="#F8FAFC" roughness={0.9} />
       </Plane>
-      
-      {/* Modern Art Pieces on Left Wall */}
-      {/* Abstract geometric art 1 */}
-      <group position={[-7.4, 3.5, -0.5]}>
-        <Plane args={[1.2, 1.2]} rotation={[0, Math.PI / 2, 0]}>
-          <meshStandardMaterial color="#FF6B6B" />
-        </Plane>
-        <Plane args={[0.5, 0.5]} position={[0.05, 0.2, 0.2]} rotation={[0, Math.PI / 2, 0]}>
-          <meshStandardMaterial color="#4ECDC4" />
-        </Plane>
-        <Plane args={[0.4, 0.8]} position={[0.05, -0.1, -0.3]} rotation={[0, Math.PI / 2, 0]}>
-          <meshStandardMaterial color="#FFE66D" />
-        </Plane>
-      </group>
-      
-      {/* Abstract circles art 2 */}
-      <group position={[-7.4, 2.5, 2]}>
-        <Sphere args={[0.4, 32, 32]} position={[0.05, 0, 0]}>
-          <meshStandardMaterial color="#A8E6CF" emissive="#A8E6CF" emissiveIntensity={0.3} />
-        </Sphere>
-        <Sphere args={[0.25, 32, 32]} position={[0.05, 0.3, 0.4]}>
-          <meshStandardMaterial color="#FFD3B6" emissive="#FFD3B6" emissiveIntensity={0.3} />
-        </Sphere>
-        <Sphere args={[0.3, 32, 32]} position={[0.05, -0.2, -0.3]}>
-          <meshStandardMaterial color="#FFAAA5" emissive="#FFAAA5" emissiveIntensity={0.3} />
-        </Sphere>
-      </group>
-      
-      {/* Minimalist lines art 3 */}
-      <group position={[-7.4, 4, 3.5]}>
-        <Plane args={[1, 1.4]} rotation={[0, Math.PI / 2, 0]}>
-          <meshStandardMaterial color="#F0F0F0" />
-        </Plane>
-        <Box args={[0.02, 1, 0.02]} position={[0.05, 0, -0.2]}>
-          <meshStandardMaterial color="#2C3E50" />
-        </Box>
-        <Box args={[0.02, 0.8, 0.02]} position={[0.05, 0.1, 0]} rotation={[0, 0, Math.PI / 6]}>
-          <meshStandardMaterial color="#E74C3C" />
-        </Box>
-        <Box args={[0.02, 0.6, 0.02]} position={[0.05, -0.2, 0.3]} rotation={[0, 0, -Math.PI / 8]}>
-          <meshStandardMaterial color="#3498DB" />
-        </Box>
-      </group>
-      
-      {/* Back wall art - Placeholder for future images */}
-      <group position={[5, 3.5, -2.95]}>
-        <Plane args={[1.8, 0.8]} rotation={[0, 0, 0]}>
-          <meshStandardMaterial color="#667EEA" emissive="#667EEA" emissiveIntensity={0.2} />
-        </Plane>
-      </group>
       
       <Plane args={[15, 10]} rotation={[Math.PI / 2, 0, 0]} position={[0, 6, 0]}>
         <meshStandardMaterial color="#FFFFFF" roughness={0.9} />
