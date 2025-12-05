@@ -1693,80 +1693,70 @@ function ContactPopup({ type, onClose }) {
   );
 }
 
-// Simple Loading Screen
-function LoadingScreen() {
-  const { progress, loaded, total } = useProgress();
+// Loading Screen Component (inside Canvas)
+function Loader() {
+  const { progress } = useProgress();
   
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100vh',
-      background: 'linear-gradient(135deg, #0EA5E9, #3B82F6)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      gap: '1.5rem',
-      zIndex: 9999
-    }}>
-      <div style={{ fontSize: '4rem', animation: 'spin 2s linear infinite' }}>🎓</div>
-      <h1 style={{
-        fontSize: '1.75rem',
-        fontWeight: 700,
-        color: 'white',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        textAlign: 'center',
-        margin: 0
-      }}>
-        Loading Code Ed Ai...
-      </h1>
-      
-      {/* Progress Bar */}
+    <Html center>
       <div style={{
-        width: '300px',
-        maxWidth: '80vw'
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '20px',
+        padding: '40px',
+        background: 'rgba(255, 255, 255, 0.95)',
+        borderRadius: '16px',
+        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+        backdropFilter: 'blur(10px)',
+        minWidth: '300px'
       }}>
-        <div style={{
-          width: '100%',
-          height: '8px',
-          background: 'rgba(255, 255, 255, 0.2)',
-          borderRadius: '4px',
-          overflow: 'hidden',
-          marginBottom: '10px'
-        }}>
-          <div style={{
-            width: `${progress}%`,
-            height: '100%',
-            background: 'white',
-            borderRadius: '4px',
-            transition: 'width 0.3s ease',
-            boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
-          }} />
-        </div>
+        <div style={{ fontSize: '3rem' }}>🎓</div>
         
-        <p style={{
-          color: 'white',
-          fontSize: '1rem',
+        <h1 style={{
+          fontSize: '2rem',
+          background: 'linear-gradient(135deg, #0EA5E9, #10B981)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
           margin: 0,
-          fontWeight: 500,
-          textAlign: 'center'
+          fontWeight: 700,
+          fontFamily: 'system-ui, -apple-system, sans-serif'
         }}>
-          {Math.round(progress)}%
-        </p>
+          Code Ed Ai
+        </h1>
         
-        <p style={{
-          color: 'rgba(255, 255, 255, 0.8)',
-          fontSize: '0.85rem',
-          margin: '5px 0 0 0',
-          textAlign: 'center'
-        }}>
-          Loading {loaded} of {total} assets...
-        </p>
+        <div style={{ width: '100%', textAlign: 'center' }}>
+          <div style={{
+            width: '100%',
+            height: '8px',
+            background: '#E5E7EB',
+            borderRadius: '4px',
+            overflow: 'hidden',
+            marginBottom: '10px'
+          }}>
+            <div style={{
+              width: `${progress}%`,
+              height: '100%',
+              background: 'linear-gradient(90deg, #0EA5E9, #10B981)',
+              borderRadius: '4px',
+              transition: 'width 0.3s ease'
+            }} />
+          </div>
+          
+          <p style={{
+            color: '#64748B',
+            fontSize: '1rem',
+            margin: 0,
+            fontWeight: 500,
+            fontFamily: 'system-ui, -apple-system, sans-serif'
+          }}>
+            {Math.round(progress)}%
+          </p>
+        </div>
       </div>
-    </div>
+    </Html>
   );
 }
 
@@ -1890,7 +1880,7 @@ export default function ClassroomShowcase() {
           performance={{ min: 0.5 }}
           style={{ pointerEvents: 'auto' }}
         >
-          <Suspense fallback={<LoadingScreen />}>
+          <Suspense fallback={<Loader />}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[-5, 5, 5]} intensity={0.8} />
             <pointLight position={[0, 4, 0]} intensity={0.3} color="#FEF3C7" />
