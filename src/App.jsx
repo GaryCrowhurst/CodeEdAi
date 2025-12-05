@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Text, Box, Plane, Cylinder, Sphere, useGLTF, useAnimations } from '@react-three/drei';
+import { Text, Box, Plane, Cylinder, Sphere, useGLTF, useAnimations, useProgress, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Base URL for assets
@@ -64,6 +64,7 @@ function ClickableButton({ position, text, onClick, color = "#FB923C", emissiveC
 // Pulsing Contact Section Component
 function PulsingContactSection({ position, backgroundColor, glowColor, icon, title, mainText, clickText, onClick, isDarkMode }) {
   const glowRef = useRef();
+  const meshRef = useRef();
   
   useFrame((state) => {
     const time = state.clock.elapsedTime;
@@ -89,32 +90,51 @@ function PulsingContactSection({ position, backgroundColor, glowColor, icon, tit
   };
   
   return (
-    <group 
-      position={position}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick();
-      }}
-      onPointerOver={(e) => { 
-        document.body.style.cursor = 'pointer';
-      }}
-      onPointerOut={(e) => { 
-        document.body.style.cursor = 'default';
-      }}
-    >
+    <group position={position}>
+      {/* Larger invisible clickable area */}
+      <mesh 
+        ref={meshRef}
+        position={[0, 0, 0.01]}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
+        onPointerOver={(e) => { 
+          e.stopPropagation();
+          document.body.style.cursor = 'pointer';
+          if (meshRef.current) {
+            meshRef.current.scale.set(1.02, 1.02, 1);
+          }
+        }}
+        onPointerOut={(e) => { 
+          e.stopPropagation();
+          document.body.style.cursor = 'default';
+          if (meshRef.current) {
+            meshRef.current.scale.set(1, 1, 1);
+          }
+        }}
+      >
+        <planeGeometry args={[5.5, 1.1]} />
+        <meshBasicMaterial transparent opacity={0} />
+      </mesh>
+      
+      {/* Visible background */}
       <mesh position={[0, 0, -0.02]}>
         <planeGeometry args={[5.2, 0.95]} />
         <meshBasicMaterial color={backgroundColor} transparent opacity={isDarkMode ? 0.8 : 0.6} />
       </mesh>
+      
       {/* Pulsing glow border */}
       <mesh ref={glowRef} position={[0, 0, -0.03]}>
-        <planeGeometry args={[5.3, 1.0]} />
+        <planeGeometry args={[5.35, 1.05]} />
         <meshBasicMaterial color={glowColor} transparent opacity={0.3} />
       </mesh>
-      <Text position={[-1.8, 0, 0]} fontSize={0.35} color={icon.color}>{icon.emoji}</Text>
-      <Text position={[-0.6, 0.18, 0]} {...smallTextProps} fontSize={0.14} color={isDarkMode ? '#E5E7EB' : '#1E293B'}>{title}</Text>
+      
+      {/* Content */}
+      <Text position={[-2.0, 0, 0.02]} fontSize={0.4} color={icon.color}>{icon.emoji}</Text>
+      <Text position={[-0.8, 0.22, 0.02]} {...smallTextProps} fontSize={0.15} color={isDarkMode ? '#E5E7EB' : '#1E293B'}>{title}</Text>
       <Text position={mainText.position} {...textProps} fontSize={mainText.fontSize} color={mainText.color}>{mainText.text}</Text>
-      <Text position={[0, -0.3, 0]} {...smallTextProps} fontSize={0.1} color={isDarkMode ? '#9CA3AF' : '#64748B'}>{clickText}</Text>
+      <Text position={[0, -0.32, 0.02]} {...smallTextProps} fontSize={0.11} color={isDarkMode ? '#9CA3AF' : '#64748B'}>{clickText}</Text>
     </group>
   );
 }
@@ -930,25 +950,25 @@ function WhiteboardContent({ section, isDarkMode, expandedCard, onCardExpand }) 
       {section === 5 && (
         <group>
           {/* Title */}
-          <Text position={[0, 1.6, 0]} {...textProps} fontSize={0.45} color={isDarkMode ? '#22D3EE' : '#0891B2'}>
+          <Text position={[0, 2.2, 0]} {...textProps} fontSize={0.5} color={isDarkMode ? '#22D3EE' : '#0891B2'}>
             Get In Touch!
           </Text>
-          <mesh position={[0, 1.38, -0.01]}>
-            <planeGeometry args={[2.8, 0.04]} />
+          <mesh position={[0, 1.95, -0.01]}>
+            <planeGeometry args={[3.2, 0.05]} />
             <meshBasicMaterial color={isDarkMode ? '#22D3EE' : '#0891B2'} />
           </mesh>
           
           {/* Subtitle */}
-          <Text position={[0, 1.0, 0]} {...smallTextProps} fontSize={0.14} color={isDarkMode ? '#D1D5DB' : '#475569'}>
+          <Text position={[0, 1.5, 0]} {...smallTextProps} fontSize={0.16} color={isDarkMode ? '#D1D5DB' : '#475569'}>
             Ready to transform your teaching?
           </Text>
-          <Text position={[0, 0.78, 0]} {...smallTextProps} fontSize={0.14} color={isDarkMode ? '#D1D5DB' : '#475569'}>
+          <Text position={[0, 1.25, 0]} {...smallTextProps} fontSize={0.16} color={isDarkMode ? '#D1D5DB' : '#475569'}>
             Let's discuss your needs!
           </Text>
           
           {/* Phone Section - Clickable with pulsing glow */}
           <PulsingContactSection 
-            position={[0, 0.25, 0]}
+            position={[0, 0.45, 0]}
             backgroundColor={isDarkMode ? '#1E3A8A' : '#DBEAFE'}
             glowColor="#0EA5E9"
             icon={{ emoji: '📞', color: isDarkMode ? '#22D3EE' : '#0EA5E9' }}
@@ -956,7 +976,7 @@ function WhiteboardContent({ section, isDarkMode, expandedCard, onCardExpand }) 
             mainText={{ 
               text: '07447 665672', 
               position: [0.85, 0, 0], 
-              fontSize: 0.26, 
+              fontSize: 0.28, 
               color: isDarkMode ? '#60A5FA' : '#0369A1' 
             }}
             clickText="👆 Click to call"
@@ -976,7 +996,7 @@ function WhiteboardContent({ section, isDarkMode, expandedCard, onCardExpand }) 
             mainText={{ 
               text: 'gary@codeedai.com', 
               position: [0.7, 0, 0], 
-              fontSize: 0.24, 
+              fontSize: 0.26, 
               color: isDarkMode ? '#FBBF24' : '#D97706' 
             }}
             clickText="👆 Click to email & copy"
@@ -990,14 +1010,14 @@ function WhiteboardContent({ section, isDarkMode, expandedCard, onCardExpand }) 
           />
           
           {/* Quick Response Note */}
-          <mesh position={[0, -1.15, -0.02]}>
-            <planeGeometry args={[5.2, 0.4]} />
+          <mesh position={[0, -1.35, -0.02]}>
+            <planeGeometry args={[5.4, 0.5]} />
             <meshBasicMaterial color={isDarkMode ? '#064E3B' : '#D1FAE5'} transparent opacity={isDarkMode ? 0.6 : 0.4} />
           </mesh>
-          <Text position={[0, -1.05, 0]} {...smallTextProps} fontSize={0.11} color={isDarkMode ? '#6EE7B7' : '#047857'}>
+          <Text position={[0, -1.22, 0]} {...smallTextProps} fontSize={0.13} color={isDarkMode ? '#6EE7B7' : '#047857'}>
             ⚡ Quick Response Guaranteed
           </Text>
-          <Text position={[0, -1.25, 0]} {...smallTextProps} fontSize={0.1} color={isDarkMode ? '#9CA3AF' : '#64748B'}>
+          <Text position={[0, -1.45, 0]} {...smallTextProps} fontSize={0.11} color={isDarkMode ? '#9CA3AF' : '#64748B'}>
             We respond within 24 hours (Mon-Fri)
           </Text>
         </group>
@@ -1675,6 +1695,8 @@ function ContactPopup({ type, onClose }) {
 
 // Simple Loading Screen
 function LoadingScreen() {
+  const { progress, loaded, total } = useProgress();
+  
   return (
     <div style={{
       position: 'fixed',
@@ -1701,6 +1723,49 @@ function LoadingScreen() {
       }}>
         Loading Code Ed Ai...
       </h1>
+      
+      {/* Progress Bar */}
+      <div style={{
+        width: '300px',
+        maxWidth: '80vw'
+      }}>
+        <div style={{
+          width: '100%',
+          height: '8px',
+          background: 'rgba(255, 255, 255, 0.2)',
+          borderRadius: '4px',
+          overflow: 'hidden',
+          marginBottom: '10px'
+        }}>
+          <div style={{
+            width: `${progress}%`,
+            height: '100%',
+            background: 'white',
+            borderRadius: '4px',
+            transition: 'width 0.3s ease',
+            boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
+          }} />
+        </div>
+        
+        <p style={{
+          color: 'white',
+          fontSize: '1rem',
+          margin: 0,
+          fontWeight: 500,
+          textAlign: 'center'
+        }}>
+          {Math.round(progress)}%
+        </p>
+        
+        <p style={{
+          color: 'rgba(255, 255, 255, 0.8)',
+          fontSize: '0.85rem',
+          margin: '5px 0 0 0',
+          textAlign: 'center'
+        }}>
+          Loading {loaded} of {total} assets...
+        </p>
+      </div>
     </div>
   );
 }
@@ -1709,7 +1774,6 @@ function LoadingScreen() {
 export default function ClassroomShowcase() {
   const [section, setSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [showContactPopup, setShowContactPopup] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -1776,12 +1840,11 @@ export default function ClassroomShowcase() {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
-    const timer = setTimeout(() => setIsLoading(false), 1000);
+    // Remove artificial loading delay - assets will load naturally
     const bubbleTimer = setTimeout(() => setShowSpeechBubble(true), 5000);
     const hideBubbleTimer = setTimeout(() => setShowSpeechBubble(false), 15000);
     
     return () => {
-      clearTimeout(timer);
       clearTimeout(bubbleTimer);
       clearTimeout(hideBubbleTimer);
       window.removeEventListener('resize', checkMobile);
@@ -1801,10 +1864,6 @@ export default function ClassroomShowcase() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
   
   return (
     <div style={{
@@ -1831,7 +1890,7 @@ export default function ClassroomShowcase() {
           performance={{ min: 0.5 }}
           style={{ pointerEvents: 'auto' }}
         >
-          <Suspense fallback={null}>
+          <Suspense fallback={<LoadingScreen />}>
             <ambientLight intensity={0.5} />
             <directionalLight position={[-5, 5, 5]} intensity={0.8} />
             <pointLight position={[0, 4, 0]} intensity={0.3} color="#FEF3C7" />
