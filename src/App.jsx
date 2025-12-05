@@ -50,7 +50,7 @@ function ClickableButton({ position, text, onClick, color = "#FB923C", emissiveC
         color="#FFFFFF"
         anchorX="center"
         anchorY="middle"
-        font='/fonts/PermanentMarker-Regular.ttf'
+        font={`${BASE_URL}fonts/PermanentMarker-Regular.ttf`}
         onClick={onClick}
         onPointerOver={(e) => { document.body.style.cursor = 'pointer'; }}
         onPointerOut={(e) => { document.body.style.cursor = 'default'; }}
@@ -77,7 +77,7 @@ function PulsingContactSection({ position, backgroundColor, glowColor, icon, tit
     maxWidth: 5.5,
     lineHeight: 1.5,
     textAlign: 'center',
-    font: '/fonts/PermanentMarker-Regular.ttf'
+    font: `${BASE_URL}fonts/PermanentMarker-Regular.ttf`
   };
   
   const textProps = {
@@ -85,7 +85,7 @@ function PulsingContactSection({ position, backgroundColor, glowColor, icon, tit
     color: '#000000',
     anchorX: 'center',
     anchorY: 'middle',
-    font: '/fonts/PermanentMarker-Regular.ttf'
+    font: `${BASE_URL}fonts/PermanentMarker-Regular.ttf`
   };
   
   return (
@@ -126,7 +126,7 @@ function WhiteboardContent({ section, isDarkMode, expandedCard, onCardExpand }) 
     color: '#000000',
     anchorX: 'center',
     anchorY: 'middle',
-    font: '/fonts/PermanentMarker-Regular.ttf'
+    font: `${BASE_URL}fonts/PermanentMarker-Regular.ttf`
   };
 
   const smallTextProps = {
@@ -135,7 +135,7 @@ function WhiteboardContent({ section, isDarkMode, expandedCard, onCardExpand }) 
     maxWidth: 5.5,
     lineHeight: 1.5,
     textAlign: 'center',
-    font: '/fonts/PermanentMarker-Regular.ttf'
+    font: `${BASE_URL}fonts/PermanentMarker-Regular.ttf`
   };
 
   return (
@@ -149,7 +149,7 @@ function WhiteboardContent({ section, isDarkMode, expandedCard, onCardExpand }) 
             color="#000000" 
             anchorX="center"
             anchorY="middle"
-            font="/fonts/PermanentMarker-Regular.ttf"
+            font={`${BASE_URL}fonts/PermanentMarker-Regular.ttf`}
           >
             Code Ed Ai
           </Text>
@@ -2119,7 +2119,7 @@ export default function ClassroomShowcase() {
 
               {/* Basic Website Link */}
               <a
-                href="/basic.html"
+                href={`${BASE_URL}basic.html`}
                 style={{
                   display: 'block',
                   padding: '0.75rem',
