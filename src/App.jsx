@@ -1427,7 +1427,9 @@ function Classroom({ section, onPhoneClick, onEnvelopeClick, isDarkMode, expande
         onCardExpand={onCardExpand}
       />
       
-      <TeachingTeacher section={section} onAvatarClick={onAvatarClick} />
+      <Suspense fallback={null}>
+        <TeachingTeacher section={section} onAvatarClick={onAvatarClick} />
+      </Suspense>
       <TeacherDesk />
       
       <StudentDesk position={[-2.5, 0, 1.5]} />
@@ -1894,35 +1896,33 @@ export default function ClassroomShowcase() {
           performance={{ min: 0.5 }}
           style={{ pointerEvents: 'auto' }}
         >
-          <Suspense fallback={<Loader />}>
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[-5, 5, 5]} intensity={0.8} />
-            <pointLight position={[0, 4, 0]} intensity={0.3} color="#FEF3C7" />
-            <pointLight position={[-7, 3, 0]} intensity={0.5} color="#E0F2FE" />
-            <pointLight position={[3, 2, 0]} intensity={0.6} color="#FBBF24" />
-            
-            <Classroom 
-              section={section}
-              onPhoneClick={() => setShowContactPopup('phone')}
-              onEnvelopeClick={() => setShowContactPopup('email')}
-              isDarkMode={isDarkMode}
-              expandedCard={expandedCard}
-              onCardExpand={setExpandedCard}
-              onAvatarClick={() => {
-                setIsMuted(false);
-                // Show brief notification
-                const notification = document.getElementById('avatar-unmute-notification');
-                if (notification) {
-                  notification.style.display = 'block';
-                  setTimeout(() => {
-                    notification.style.display = 'none';
-                  }, 2000);
-                }
-              }}
-            />
-            
-            <CameraController section={section} isMobile={isMobile} showAvatar={true} />
-          </Suspense>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[-5, 5, 5]} intensity={0.8} />
+          <pointLight position={[0, 4, 0]} intensity={0.3} color="#FEF3C7" />
+          <pointLight position={[-7, 3, 0]} intensity={0.5} color="#E0F2FE" />
+          <pointLight position={[3, 2, 0]} intensity={0.6} color="#FBBF24" />
+          
+          <Classroom 
+            section={section}
+            onPhoneClick={() => setShowContactPopup('phone')}
+            onEnvelopeClick={() => setShowContactPopup('email')}
+            isDarkMode={isDarkMode}
+            expandedCard={expandedCard}
+            onCardExpand={setExpandedCard}
+            onAvatarClick={() => {
+              setIsMuted(false);
+              // Show brief notification
+              const notification = document.getElementById('avatar-unmute-notification');
+              if (notification) {
+                notification.style.display = 'block';
+                setTimeout(() => {
+                  notification.style.display = 'none';
+                }, 2000);
+              }
+            }}
+          />
+          
+          <CameraController section={section} isMobile={isMobile} showAvatar={true} />
         </Canvas>
       </div>
       
@@ -2213,9 +2213,9 @@ export default function ClassroomShowcase() {
                   flexDirection: 'column',
                   alignItems: 'center',
                   gap: '0.3rem',
-                  fontSize: '0.65rem',
-                  color: section === i ? '#0EA5E9' : '#94A3B8',
-                  fontWeight: section === i ? 700 : 500,
+                  fontSize: '0.75rem',
+                  color: section === i ? '#0284C7' : '#475569',
+                  fontWeight: section === i ? 700 : 600,
                   cursor: 'pointer',
                   padding: '0.4rem 0.2rem',
                   borderRadius: '8px',
@@ -2224,7 +2224,7 @@ export default function ClassroomShowcase() {
                   WebkitTapHighlightColor: 'transparent',
                   flex: 1,
                   textAlign: 'center',
-                  background: section === i ? 'rgba(14, 165, 233, 0.1)' : 'transparent'
+                  background: section === i ? 'rgba(14, 165, 233, 0.15)' : 'transparent'
                 }}
               >
                 <div style={{
